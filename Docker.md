@@ -1,10 +1,6 @@
 [toc]
 
-# Docker学习笔记
-
-## Docker 安装与卸载
-
-### CentOS7 环境准备
+# CentOS7-Docker 安装前环境准备
 
 ```sh
 # 下载阿里源
@@ -15,7 +11,7 @@ wget -O /etc/yum.repos.d/docker-ce.repo http://mirrors.aliyun.com/docker-ce/linu
 # 更新源
 yum clean all && yum makecache
 # 安装必要软件
-yum install -y bash-completion vim vim-common lrzsz wget expect net-tools nc nmap tree dos2unix htop iftop iotop unzip telnet sl psmisc nethogs glances bc ntpdate openldap-devel
+yum install -y bash-completion vim vim-common  wget net-tools tree lrzsz expect  nc nmap  dos2unix htop iftop iotop unzip telnet sl psmisc nethogs glances bc ntpdate openldap-devel
 # 查看内核版本是否大于 3.10
 uname  -r
 # 打开内核流量转发功能
@@ -33,7 +29,7 @@ sysctl -p /etc/sysctl.d/docker.conf
 yum list docker-ce --showduplicates | sort -r
 ```
 
-### CentOS7 安装 、卸载 
+# CentOS7-Docker 安装 、卸载 
 
 ```sh
 # 安装 docker
@@ -55,7 +51,7 @@ EOF
 docker info
 ```
 
-### Ubuntu 环境准备
+# Ubuntu-Docker 安装前环境准备
 
 ```sh
 # 首先，更新软件包索引，并且安装必要的依赖软件，来添加一个新的 HTTPS 软件源：
@@ -69,18 +65,9 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 # 02.想要安装指定版本，首先列出 Docker 软件源中所有可用的版本：
 apt-get list -a docker-ce
-# 配置镜像加速器
-sudo mkdir -p /etc/docker
-sudo tee /etc/docker/daemon.json <<-'EOF'
-{
-  "registry-mirrors": ["https://qokc1a1i.mirror.aliyuncs.com"]
-}
-EOF
-
-
 ```
 
-### Ubuntu 安装、卸载
+# Ubuntu-Docker 安装、卸载
 
 ```sh
 # 通过在软件包名后面添加版本=<VERSION>来安装指定版本：
@@ -94,7 +81,7 @@ sudo apt-get purge docker-ce
 sudo apt-get autoremove
 ```
 
-## Docker 服务相关命令
+# Docker 服务相关命令
 
 ```sh
 # 查看 docker 是否启动
@@ -102,7 +89,7 @@ systemctl is-active docker
 # 重新加载系统 daemon 控制器
 systemctl daemon-reload
 # 启动 docker
-systemctl start docker
+  systemctl start docker
 # 停止 docker 
 systemctl stop docker
 # 重启 docker
@@ -113,7 +100,7 @@ systemctl status docker
 systemctl enable docker.service
 ```
 
-## Docker 镜像相关命令
+# Docker 镜像相关命令
 
 ```sh
 # 搜索镜像
@@ -136,7 +123,7 @@ docker sava 镜像名
 
 
 
-## Docker 容器管理命令
+# Docker 容器管理命令
 
 ### 查看所有容器
 
@@ -150,39 +137,36 @@ docker inspect 容器名			# 查看容器信息
 
 ```sh
 docker run
--i	   # 保持和 docker 容器内的交互，启动容器时，运行的命令结束后，容器依然存活(没有退出)
--t 		 # 为容器的标准输入虚拟一个终端(跟 -i 一起使用)
--d 		 # 后台运行
---rm 	 # 容器在启动后，程序停止就销毁
---name # 给容器起个自定义的名称
--p		 # 宿主机端口映射:内部端口		
--v     # 数据卷映射主机目录:容器目录
-docker run -itd --rm \
--name 自定义镜像名 \ 
--p 映射端口:内部端口  \
--v 数据卷主机目录:容器目录 要启动的镜像
+					 -i	 		# 保持和 docker 容器内的交互，启动容器时，运行的命令结束后，容器依然存活(没有退出)
+					 -t 		# 为容器的标准输入虚拟一个终端(跟 -i 一起使用)
+					 -d 		# 后台运行
+					 --rm 	# 容器在启动后，程序停止就销毁
+					 --name # 给容器起个自定义的名称
+					 -p			# 宿主机端口映射:内部端口		
+           -v     # 数据卷映射主机目录:容器目录
+docker run -id --rm -name 自定义镜像名 -p 映射端口:内部端口  -v 数据卷主机目录:容器目录 要启动的镜像
 ```
 
 ### 启动容器
 
 ```sh
-docker start 容器名｜容器ID 										# 开启容器
-docker container start 容器名｜容器ID 					# 开启容器
-docker start `docker ps -aq`|$(docker ps -aq) # 开启所有容器
+docker start 容器名｜容器ID 											# 开启容器
+docker container start 容器名｜容器ID 						# 开启容器
+docker start `docker ps -aq`|$(docker ps -aq) 	# 开启所有容器
 ```
 
 ### 停止(关闭)容器
 
 ```sh
-docker stop 容器名｜容器ID 											# 停止正在运行的容器
-docker stop `docker ps -aq`|$(docker ps -aq) 	# 停止所有正在运行的容器
+docker stop 容器名｜容器ID 												# 停止正在运行的容器
+docker stop `docker ps -aq`|$(docker ps -aq) 		# 停止所有正在运行的容器
 ```
 
 ### 删除容器
 
 ```sh
-docker rm 容器名｜容器ID 												# 删除容器
-docker rm `docker ps -aq`|$(docker ps -aq) 		# 删除全部容器
+docker rm 容器名｜容器ID 													# 删除容器
+docker rm `docker ps -aq`|$(docker ps -aq) 			# 删除全部容器
 ```
 
 ### 进入容器
@@ -242,7 +226,7 @@ docker cp 1.txt nginx01:/root
 docker cp 容器名称:/root/1.txt 宿主机路径
 ```
 
-## Docker 部署 MySQL
+# Docker 部署 MySQL
 
 ```sh
 # 搜索 mysql 镜像
@@ -273,7 +257,7 @@ exit
 # 外部链接的信息为：宿主机IP 端口号为映射的端口
 ```
 
-## Docker 部署 Tomcat
+# Docker 部署 Tomcat
 
 ```sh
 # 搜索 Tomcat 镜像
@@ -292,7 +276,7 @@ docker run -id --rm \
 tomcat
 ```
 
-## Docker 部署 Nginx
+# Docker 部署 Nginx
 
 ```sh
 # 搜索 Nginx 镜像
@@ -300,7 +284,7 @@ docker search nginx
 # 拉取 Nginx 镜像
 docker pull nginx
 # 创建 Nginx 映射卷
-mkdir -p ~/nginx/conf
+mkdir -p ~/nginx/conf/conf.d 
 cd ~/nginx/conf
 # 在 ～/nginx/conf 目录下创建 nginx.conf 文件，黏贴以下内容：
 vim nginx.conf
@@ -342,52 +326,228 @@ http {
 ```
 
 ```sh
+# 在 ～/nginx/conf/conf.d 目录下创建 default.conf 文件，黏贴以下内容：
+vim  ～/nginx/conf/conf.d/default.conf
+```
+
+```sh
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  localhost;
+    
+    #access_log  /var/log/nginx/host.access.log  main;
+    
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+    
+    #error_page  404              /404.html;
+    # redirect server error pages to the static page /50x.html
+    
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+    
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    
+    #location ~ \.php$ {
+    #    proxy_pass   http://127.0.0.1;
+    #}
+    
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    
+    #location ~ \.php$ {
+    #    root           html;
+    #    fastcgi_pass   127.0.0.1:9000;
+    #    fastcgi_index  index.php;
+    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    include        fastcgi_params;
+    #}
+    
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    
+    #location ~ /\.ht {
+    #    deny  all;
+    #}
+}
+```
+
+
+
+# 
+
+```sh
 # 开启 Nginx 容器
-docker run -d -p 80:80 --name nginx nginx:alpine
-
-docker run -id \
+docker run -id  \
 --name nginx \
--p 80:80 -p 443:443 \
--v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf \
--v $PWD/conf/conf.d:/etc/nginx/conf.d/
--v $PWD/logs:/var/log/nginx \
--v $PWD/html:/usr/share/nginx/html \
-nginx
-
-docker run -id  --name nginx \
--p 80:80 -p 443:443 \
+-p 80:80 \
 -v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf \
 -v $PWD/conf/conf.d:/etc/nginx/conf.d \
--v $PWD/conf/key:/etc/nginx/key \
 -v $PWD/logs:/var/log/nginx \
 -v $PWD/html:/usr/share/nginx/html \
 nginx:latest
-
-docker run -id  --name nginx -p 80:80 -p 443:443 \
--v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf \
--v $PWD/conf/conf.d:/etc/nginx/conf.d \
--v $PWD/conf/key:/etc/nginx/key \
--v $PWD/logs:/var/log/nginx \
--v $PWD/html:/usr/share/nginx/html \
-nginx:alpine
 ```
 
-## Docker 镜像制作
+# Docker 镜像制作
 
-### DockerFile 的指令
+## DockerFile 的指令
 
 ```sh
-FROM			# 基础镜像
-MAINTAINER# 镜像作者 （姓名+邮箱）
-RUN				# 镜像构建的时候需要运行的命令
-ADD				# 步骤
-WORKDIR		# 镜像的工作目录
-VOLUME		# 挂载的目录
-EXPOSE		# 指定对外的端口
-CMD				# 指定容器启动的时运行的命令，最后一个生效
-ENTRYPOINT# 指定容器启动的时运行的命令，可以追加
-ONBUILD		# 当构建一个被继承 DockerFile 这个时候就会触发
-COPY			# 将文件拷贝到镜像中
-ENV				# 构建的时候设置环境变量
+FROM					# 基础镜像
+MAINTAINER		# 镜像作者 （姓名+邮箱）
+RUN						# 镜像构建的时候需要运行的命令
+ADD						# 步骤
+WORKDIR				# 镜像的工作目录
+VOLUME				# 挂载的目录
+EXPOSE				# 指定对外的端口
+CMD						# 指定容器启动的时候要运行的命令，只有最后一个会生效，可被替代
+ENTRYPOINT		# 指定容器启动的时候要运行的命令，可以追加命令
+ONBUILD				# 当构建-个被继承 DockerFile 这个时候就会触发 ONBUILD 指令
+COPY					# 将文件拷贝到镜像中
+ENV						# 构建的时候设置环境变量
+```
+
+```sh
+vim Dockerfile
+```
+
+```sh
+FROM p3terx/openwrt-build-env:18.04
+MAINTAINER itwuge<itwuge@gmail.com>
+RUN sudo sh -c "apt update && apt upgrade -y"
+VOLUME /home/user/openwrt
+EXPOSE 22
+CMD echo "--------OK----------"
+```
+
+
+
+```sh 
+# 拉取基础镜像
+FROM ubuntu:18.04
+# Dockerfile 作者
+MAINTAINER itwuge<itwuge@gmail.com>
+# 取消ubuntu时区设置
+ENV DEBIAN_FRONTEND=noninteractive
+# 更新系统
+RUN apt-get update && apt-get upgrade -y
+# 安装依赖
+RUN apt-get  install -y  sudo build-essential asciidoc binutils bzip2 curl gawk gettext git libncurses5-dev libz-dev patch python3.5 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf rsync wget
+# 拉取文件
+RUN git clone https://github.com/Lienol/openwrt openwrt-l
+RUN git clone https://github.com/coolsnowwolf/lede openwrt-lede
+RUN git clone https://github.com/openwrt/openwrt openwrt-o
+# 暴露端口
+EXPOSE 22
+# 挂载目录
+VOLUME /home
+CMD echo "--------OK----------"
+```
+
+
+
+```sh
+docker build -t openwrt-env .
+```
+
+
+
+# Docker 定制镜像
+
+## Centos 安装 nbd 模块
+
+```sh
+# 查看系统版本
+cat /etc/redhat-release
+# CentOS Linux release 7.9.2009 (Core)
+# 查看系统内核
+uname -r
+# 3.10.0-1160.90.1.el7.x86_64
+
+# 下载阿里源
+#wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+# wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+# 更新源
+# yum clean all && yum makecache
+# 安装相关包
+yum install -y bash-completion kernel-devel kernel-headers libelf-dev   elfutils-libelf-devel　gcc+ gcc-c++
+# 下载内核包
+wget https://mirrors.aliyun.com/centos-vault/7.9.2009/os/Source/SPackages/kernel-3.10.0-1160.el7.src.rpm
+# 编译
+rpm -ihv kernel-3.10.0-1160.el7.src.rpm
+cd ~/rpmbuild/SOURCES
+# 解压 -C 指定目录　/usr/src/kernels
+tar Jxvf linux-3.10.0-1160.el7.tar.xz -C /usr/src/kernels/
+# 解压后生成两个文件
+cd /usr/src/kernels/ && ll
+drwxr-xr-x. 22 root root 4096 9月   6 08:07 3.10.0-957.27.2.el7.x86_64
+drwxrwxr-x. 24 root root 4096 9月   6 08:17 linux-3.10.0-957.el7
+mv linux-3.10.0-1160.el7 $(uname -r)
+cd $(uname -r)
+# 删除所有编译生成文件，内核配置文件
+make mrproper
+# 从yum安装的内核文件夹中复制Module.symvers
+cp ../3.10.0-1160.92.1.el7.x86_64/Module.symvers  ./
+# 复制当前系统的内核配置文件
+cp /boot/config-$(uname -r) ./.config
+#备份当前.config文件为.config.old
+make oldconfig
+# 安装依赖
+yum install -y elfutils-libelf-devel
+make prepare
+make scripts
+# 修复编译出错 error: ‘REQ_TYPE_SPECIAL’ undeclared
+sed -i "s/sreq.cmd_type =.*/sreq.cmd_type = 7;/g" drivers/block/nbd.c
+make CONFIG_BLK_DEV_NBD=m M=drivers/block
+cp drivers/block/nbd.ko /lib/modules/$(uname -r)/kernel/drivers/block/
+depmod -a
+# 启用 nbd 模块 设置节点数
+modprobe nbd max_part=8
+```
+
+## 打包镜像
+
+```sh
+# 打包系统 其中/proc、/sys、/run、/dev这几个目录都是系统启动时自动生成的，虽然也属于文件系统一部分，但是他们每次开机都会有变化，所以打包的时候就应该忽略它们。
+cd /
+tar -czvpf /tmp/system.tar.gz --directory=/ --exclude=proc --exclude=sys --exclude=dev --exclude=run --exclude=boot .
+# 导入docker
+$ cat system.tar |docker import - centos:7.2
+$ docker import system.tar centos:7.2
+# 运行容器
+$ docker run -t -i centos:7.2 /bin/bash
+```
+
+
+
+# Docker上传镜像
+
+## [hub.docker](hub.docker.com)上传
+
+```SH
+# https://hub.docker.com/settings/security
+# 头像---》Account Settings---》Sesurity   设置一个私钥  保存好
+dckr_pat_-8XaZQk1Z6aKuR0cK5lYKxcYJuo
+# docker 登录
+$ docker login -u itwuge -p dckr_pat_-8XaZQk1Z6aKuR0cK5lYKxcYJuo
+# 打标签
+$ docker tag centos-server:latest  itwuge/centos:latest
+# 上传
+$ docker push itwuge/centos:latest
+
+docker pull itwuge/centos:latest
+docker pull itwuge/ubuntu:latest
+```
+
+## [阿里云上传](https://cr.console.aliyun.com/ap-southeast-1/instances)
+
+```sh
+$ docker login --username=711****@qq.com registry.ap-southeast-1.aliyuncs.com
+$ docker tag [ImageId] registry.ap-southeast-1.aliyuncs.com/itwuge/centos-server:[镜像版本号]
+$ docker push registry.ap-southeast-1.aliyuncs.com/itwuge/centos-server:[镜像版本号]
 ```
 
