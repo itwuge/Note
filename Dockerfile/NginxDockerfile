@@ -25,11 +25,13 @@ ENV CER certbot
 RUN git clone https://github.com/ywdblog/certbot-letencrypt-wildcardcertificates-alydns-au  &&  mv certbot-letencrypt-wildcardcertificates-alydns-au $CER
 # 切换工作目录
 WORKDIR /usr/local/$CER
+ENV KEY 你的KEY
+ENV TOKEN 你的Token
 RUN chmod 0777 au.sh
 RUN echo 'fun' >> domain.ini
 RUN sed -i 's/pythoncmd="\/usr\/bin\/python"/pythoncmd="\/usr\/bin\/python3"/' ./au.sh
-RUN sed -i 's/ALY_KEY=""/ALY_KEY="LTAI5tFwh2NrwsmntbNdgskx"/' ./au.sh
-RUN sed -i 's/ALY_TOKEN=""/ALY_TOKEN="hjxTPtIuQ34RI7a1ev2Ad2ZYywBxmB"/' ./au.sh
+RUN sed -i 's/ALY_KEY=""/ALY_KEY=$KEY/' ./au.sh
+RUN sed -i 's/ALY_TOKEN=""/ALY_TOKEN=$TOKEN/' ./au.sh
 # 测试申请证书脚本
 RUN echo '#!/bin/bash' >> ./test-apply.sh
 RUN echo 'certbot certonly -n --agree-tos -m 7111479@qq.com -d wuge.fun -d *.wuge.fun --manual --preferred-challenges dns --dry-run --manual-auth-hook "/usr/local/certbot/au.sh python aly add" --manual-cleanup-hook "/usr/local/certbot/au.sh python aly clean"' >> ./test-apply.sh
