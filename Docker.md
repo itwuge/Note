@@ -538,16 +538,17 @@ $ docker login -u itwuge -p dckr_pat_-8XaZQk1Z6aKuR0cK5lYKxcYJuo
 $ docker tag centos-server:latest  itwuge/centos:latest
 # 上传
 $ docker push itwuge/centos:latest
-
-docker pull itwuge/centos:latest
-docker pull itwuge/ubuntu:latest
+$ docker pull itwuge/centos:latest
+$ docker pull itwuge/ubuntu:latest
 ```
 
 ## [阿里云上传](https://cr.console.aliyun.com/ap-southeast-1/instances)
 
 ```sh
 $ docker login --username=711****@qq.com registry.ap-southeast-1.aliyuncs.com
-$ docker tag [ImageId] registry.ap-southeast-1.aliyuncs.com/itwuge/centos-server:[镜像版本号]
-$ docker push registry.ap-southeast-1.aliyuncs.com/itwuge/centos-server:[镜像版本号]
+$ docker tag [ImageId] registry.ap-southeast-1.aliyuncs.com/itwuge/centos
+$ docker push registry.ap-southeast-1.aliyuncs.com/itwuge/centos
+$ docker pull registry.ap-southeast-1.aliyuncs.com/itwuge/centos/centos
+$ docker pull registry.ap-southeast-1.aliyuncs.com/itwuge/ubuntu
 ```
 
