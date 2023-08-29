@@ -1,0 +1,10 @@
+cd /root/NginxDockerFile
+docker build -t nginx .
+cd nginx
+docker run -id  --name nginx -p 80:80 -p 443:443 \
+-v $PWD/conf/nginx.conf:/usr/local/nginx/conf/nginx.conf \
+-v $PWD/conf/conf.d:/usr/local/nginx/conf/conf.d \
+-v $PWD/logs:/usr/local/nginx/logs \
+-v $PWD/html:/usr/local/nginx/html \
+-v $PWD/ssl:/usr/local/nginx/ssl \
+nginx:latest
