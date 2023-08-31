@@ -394,7 +394,7 @@ ENV PATH /usr/local/nginx/sbin:$PATH
 # 切换工作目录 准备安装 证书插件
 WORKDIR /usr/local
 # 切换工作目录 开始安装 证书插件 设置certbot 目录 并修改文件名
-ENV CER=certbot KEY="LTAI5tFwh2NrwsmntbNdgskx" TOKEN="hjxTPtIuQ34RI7a1ev2Ad2ZYywBxmB"
+ENV CER=certbot KEY="你的key" TOKEN="你的Token"
 RUN git clone https://github.com/ywdblog/certbot-letencrypt-wildcardcertificates-alydns-au  &&  mv certbot-letencrypt-wildcardcertificates-alydns-au $CER
 # 切换工作目录
 WORKDIR /usr/local/$CER
