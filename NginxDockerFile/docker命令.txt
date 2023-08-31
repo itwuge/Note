@@ -1,5 +1,7 @@
+# Docker 生成镜像
 cd /root/NginxDockerFile
 docker build -t nginx .
+# 启动容器
 cd nginx
 docker run -id  --name nginx -p 80:80 -p 443:443 \
 -v $PWD/conf/nginx.conf:/usr/local/nginx/conf/nginx.conf \

@@ -1,0 +1,33 @@
+# Docker 生成镜像
+cd certbotNginx
+docker build -t certbot-nginx .
+# 启动容器
+cd nginx
+docker run -id  --name nginx -p 80:80 -p 443:443  \
+-v $PWD/conf/nginx.conf:/usr/local/nginx/conf/nginx.conf \
+-v $PWD/conf/conf.d:/usr/local/nginx/conf/conf.d \
+-v $PWD/logs:/usr/local/nginx/logs \
+-v $PWD/html:/usr/local/nginx/html \
+certbot-nginx
+# 进入容器
+docker exec -it nginx /bin/bash
+# 查看是否生成证书
+certbot certificates
+# 如果没有生成则运行
+/usr/local/certbot/apply.sh
+************************************************************************************
+# 1.撤销证书
+# 语法：
+# certbot revoke 你的域名文件夹 可能有多个文件，如果有cert1.pem，执行这个命令
+certbot revoke --cert-path /etc/letsencrypt/archive/你的域名文件夹/cert1.pem
+# Would you like to delete the cert(s) you just revoked, along with all earlier
+# and later versions of the cert?
+# 选择 y 删除所有证书版本
+# 2.删除证书
+# 语法：
+certbot delete --cert-name domain.com删除此前配置的证书
+ ************************************************************************************
+# 添加计划任务
+crontab -e 
+# 添加内容
+00 00 01 */2 *  root  /usr/local/certbot/renewal.sh  >> /usr/local/certbot/renewal.log 2>&1
