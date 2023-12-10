@@ -14,7 +14,7 @@ git config --global user.email “输入你的邮箱”
 ## 2.打开 bash，使用git命令。
 
 ```sh
-# 生产密钥，命令如下。
+# 生产密钥，命令如下 一路回车。
 ssh-keygen -t rsa -C "7111479@qq.com"
 （首先 ssh-keygen 会确认   
 密钥的存储位置（默认是 .ssh/id_rsa），
